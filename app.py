@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, flash, request, send_file, jsonify
 import io
-from scraper import scrawl_user_reviews, get_top_words
+from scraper import scrawl_user_reviews
 from cloud import create_wordcloud
 from os import path
 import tempfile
