@@ -9,12 +9,11 @@ from base64 import b64encode
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'ea297de1fa1f299dd139fc7de71b8411';
+app.config['SECRET_KEY'] = '%vbrv5cngh=^k_cjjj+1ruw+0c-5i(pn$zm)3o8sjpv_st8u3v';
 
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-	# form = UserForm()
 	image_file = None
 	return render_template("home.html", image_file=image_file)
 
