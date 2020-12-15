@@ -1,0 +1,28 @@
+body {
+	background-color: #F9F9F9;
+}
+
+.box-container {
+	padding: 10px;
+	border: 1px solid black;
+	border-radius: 10px;
+	background-color: white;
+}
+
+.spacer {
+	height: 50px;
+}
+
+.mini-spacer {
+	height: 10px;
+}
+
+.title {
+	text-align: center;
+}
+
+.cloud-btn {
+	background-color: #E9E9E9;
+	border-radius: 5px;
+	height: 40px;
+}

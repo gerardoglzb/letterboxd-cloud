@@ -19,17 +19,37 @@
 			{% endfor %}
 		{% endif %}
 	{% endwith %}
-	<div>
-		<form method="POST" action="" id="cloud-form">
-			<div>
-				<label>Your username:</label>
-				<input type="text" name="username" id="username-input">
-			</div>
-			<button type="submit">Get cloud!</button>
-		</form>
+	<div class="spacer"></div>
+	<div class="container title-container">
+		<div class="row">
+			<h1 class="title">Letterboxd Word Cloud</h1>
+		</div>
 	</div>
-	<div>
-		<img hidden="true" id="cloud-img">
+	<br>
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-6 box-container">
+				<div class="mini-spacer"></div>
+				<form method="POST" action="" class="cloud-form" id="cloud-form">
+					<div class="row">
+						<div class="col-md-2"></div>
+						<label class="box-label col-md-4">Letterboxd username:</label>
+						<input type="text" placeholder="Username" name="username" class="box-input col-md-4" id="username-input">
+						<div class="col-md-2"></div>
+					</div>
+					<br>
+					<div class="row justify-content-center">
+						<button class="cloud-btn col-md-4" type="submit">Generate cloud!</button>
+					</div>
+				</form>
+				<div class="mini-spacer"></div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row justify-content-center">
+			<img hidden="true" class="img-fluid" style="max-width: 80%;" id="cloud-img">
+		</div>
 	</div>
 </body>
 <footer>
