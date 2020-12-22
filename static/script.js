@@ -1,8 +1,5 @@
-console.log("working!");
-
 $(document).ready(function() {
 	$('form').on('submit', function(e) {
-		console.log("pressed");
 		$.ajax({
 			data: {
 				username: $('#username-input').val()
@@ -10,15 +7,35 @@ $(document).ready(function() {
 			type: 'POST',
 			url: '/get-cloud'
 		})
-		.done(function(data) {
+		.done(function(data, status, request) {
 			if (data.error) {
-				console.log(data.error);
+				alert(data.error);
 			} else {
-				console.log("success!");
-				$("#cloud-img").attr("src", 'data:;base64,' + data['image']);
-				$("#cloud-img").removeAttr('hidden');
+				var status_url = request.getResponseHeader('Location');
+				check_job_status(status_url);
 			}
 		});
 		e.preventDefault();
 	});
 });
+
+function check_job_status(status_url) {
+	$.getJSON(status_url, function(data) {
+    switch (data.status) {
+		case "unknown":
+			alert("Unknown job");
+			break;
+		case "finished":
+			$("#cloud-img").attr("src", 'data:;base64,' + data['image']);
+			$("#cloud-img").removeAttr('hidden');
+          	break;
+		case "failed":
+			alert("Job failed");
+			break;
+		default:
+		setTimeout(function() {
+			check_job_status(status_url);
+		}, 1000);
+    }
+  });
+}

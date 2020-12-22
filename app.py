@@ -1,15 +1,17 @@
 from flask import Flask, render_template, url_for, flash, request, send_file, jsonify
-import io
-from scraper import scrawl_user_reviews
-from cloud import create_wordcloud
-from os import path
-import tempfile
-from base64 import b64encode
+import redis
+from rq import Queue
+from rq.job import Job
+from worker import conn
+from lb_processing import cloud_processing
 
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '%vbrv5cngh=^k_cjjj+1ruw+0c-5i(pn$zm)3o8sjpv_st8u3v';
+
+# r = redis.Redis()
+q = Queue(connection=conn)
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -22,14 +24,24 @@ def home():
 def get_cloud():
 	username = request.form['username']
 	if username:
-		with tempfile.TemporaryDirectory() as tempdir:
-			create_wordcloud(" ".join(scrawl_user_reviews(username)), username, tempdir)
-			image_file = path.join(tempdir, f"{username}.png")
-			with open(image_file, 'rb') as img:
-				image_binary = img.read()
-				image = b64encode(image_binary).decode("utf-8")
-				return jsonify({'status': True, 'image': image})
-	return jsonify({'error': 'Missing data'})
+		job = q.enqueue(cloud_processing, username)
+		return jsonify({}), 202, {'Location': url_for('job_status', job_id=job.get_id())}
+	return jsonify({'error': 'You need to input a username.'})
+
+
+@app.route("/status/<job_id>", methods=['GET'])
+def job_status(job_id):
+    job = q.fetch_job(job_id)
+    if job is None:
+        response = {'status': 'unknown'}
+    else:
+        response = {
+            'status': job.get_status(),
+            'image': job.result,
+        }
+        # if job.is_failed:
+            # response['message'] = job.exc_info.strip().split('\n')[-1]
+    return jsonify(response)
 
 
 if __name__ == '__main__':
