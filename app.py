@@ -34,6 +34,8 @@ def job_status(job_id):
     job = q.fetch_job(job_id)
     if job is None:
         response = {'status': 'unknown'}
+    elif job.result is False:
+    	response = {'status': 'invalid'}
     else:
         response = {
             'status': job.get_status(),

@@ -32,6 +32,9 @@ function check_job_status(status_url) {
 		case "failed":
 			alert("Job failed");
 			break;
+		case "invalid":
+			alert("Invalid user. Make sure it exists and has reviews.");
+			break;
 		default:
 		setTimeout(function() {
 			check_job_status(status_url);

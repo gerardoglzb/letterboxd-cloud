@@ -3,6 +3,15 @@ import requests
 import collections
 
 
+def validate_user(user):
+    source = requests.get(f"https://letterboxd.com/{user}/films/reviews/").text
+    soup = BeautifulSoup(source, "lxml")
+    if soup.find('ul', class_='film-details-list'):
+        return True
+    print("NONEXISTANT")
+    return False
+
+
 def get_review(link):
     source = requests.get(f"https://letterboxd.com{link}").text
     soup = BeautifulSoup(source, "lxml")
