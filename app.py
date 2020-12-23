@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '%vbrv5cngh=^k_cjjj+1ruw+0c-5i(pn$zm)3o8sjpv_st8u3v';
 
 # r = redis.Redis()
-q = Queue(connection=conn)
+q = Queue(connection=conn, default_timeout=1800)
 
 
 @app.route("/", methods=['GET', 'POST'])
