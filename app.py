@@ -1,4 +1,5 @@
 from flask import Flask, render_template, url_for, flash, request, send_file, jsonify
+import os
 import redis
 from rq import Queue
 from rq.job import Job
@@ -8,9 +9,8 @@ from lb_processing import cloud_processing
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = '%vbrv5cngh=^k_cjjj+1ruw+0c-5i(pn$zm)3o8sjpv_st8u3v';
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', '12345')
 
-# r = redis.Redis()
 q = Queue(connection=conn, default_timeout=1800)
 
 
@@ -47,4 +47,4 @@ def job_status(job_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=(os.environ.get('DEBUG_VALUE') == 'True'))

@@ -20,14 +20,12 @@ $(document).ready(function() {
 });
 
 function check_job_status(status_url) {
-	console.log("checking job status");
 	$.getJSON(status_url, function(data) {
     switch (data.status) {
 		case "unknown":
 			alert("Unknown job");
 			break;
 		case "finished":
-			console.log("image done");
 			$("#cloud-img").attr("src", 'data:;base64,' + data['image']);
 			$("#cloud-img").removeAttr('hidden');
           	break;
